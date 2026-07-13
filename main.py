@@ -1,8 +1,10 @@
 from fastapi import FastAPI
+from prometheus_fastapi_instrumentator import Instrumentator
 import redis
 import os
 
 app = FastAPI()
+Instrumentator().instrument(app).expose(app)
 
 # connect to Redis using environment variable
 redis_client = redis.Redis.from_url(

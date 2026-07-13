@@ -8,14 +8,28 @@ services:
     environment:
       - REDIS_URL=redis://redis:6379
     volumes:
-      - ./:/app  # bind mount for development
+      - ./:/app
 
   redis:
     image: redis:alpine
     ports:
       - "6379:6379"
     volumes:
-      - redis_data:/data  # named volume for persistence
+      - redis_data:/data
+
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
 
 volumes:
   redis_data:
